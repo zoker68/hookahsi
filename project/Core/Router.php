@@ -4,48 +4,100 @@ namespace Core;
 
 class Router
 {
-    private array $routes = [];
+    private static array $routes = [];
 
-    private function add($method, $uri, $controller): void
+    private function add($method, $uri, $controller): Router
     {
-        $this->routes[] = [
+        if (is_array($controller)) {
+            list($controller, $action) = $controller;
+        }
+
+        static::$routes[] = [
             'method' => $method,
             'uri' => $uri,
-            'controller' => $controller
+            'controller' => $controller,
+            'action' => $action ?? null,
+            'name' => null,
+            'middleware' => [],
         ];
+
+        return $this;
     }
 
-    public function get($uri, $controller): void
+    public function get($uri, $controller): Router
     {
-        $this->add('GET', $uri, $controller);
+        return $this->add('GET', $uri, $controller);
     }
 
-    public function post($uri, $controller): void
+    public function post($uri, $controller): Router
     {
-        $this->add('POST', $uri, $controller);
+        return $this->add('POST', $uri, $controller);
     }
 
-    public function delete($uri, $controller): void
+    public function delete($uri, $controller): Router
     {
-        $this->add('DELETE', $uri, $controller);
+        return $this->add('DELETE', $uri, $controller);
     }
 
-    public function patch($uri, $controller): void
+    public function patch($uri, $controller): Router
     {
-        $this->add('PATCH', $uri, $controller);
+        return $this->add('PATCH', $uri, $controller);
+    }
+
+    public function name($name): Router
+    {
+        static::$routes[array_key_last(static::$routes)]['name'] = $name;
+        return $this;
+    }
+
+    public function middleware($keys): Router
+    {
+        if (is_string($keys)) {
+            $keys[] = $keys;
+        }
+
+        static::$routes[array_key_last(static::$routes)]['middleware'] = $keys;
+
+        return $this;
     }
 
     public function route($method, $uri)
     {
 
-        foreach ($this->routes as $route) {
+        foreach (static::$routes as $route) {
             if ($route['method'] == $method and $route['uri'] == $uri) {
-                $controller = new $route['controller']();
+
+                if (!empty($route['middleware'])) {
+                    foreach ($route['middleware'] as $key) {
+                        Middleware::resolve($key);
+                    }
+                }
+
+                if (!class_exists($route['controller'])) {
+                    throw new \Exception("Class ".$route['controller']." does not exist");
+                }
+
+                $controller = new $route['controller'];
+
+                if ($route['action'] && method_exists($route['controller'],$route['action'])) {
+                    return $controller->{$route['action']}();
+                }
+
                 return $controller();
             }
         }
 
         abort(404);
+    }
 
+    public static function getRoute($name): string
+    {
+        foreach (static::$routes as $route) {
+            if ($route['name'] == $name) {
+                return $route['uri'];
+            }
+        }
+
+        throw new \Exception("Route name \"{$name}\" does not find!");
     }
 }

@@ -2,11 +2,19 @@
 
 namespace App\Controllers\Index;
 
-class IndexController
+use Core\Controller;
+
+class IndexController extends Controller
 {
+    protected string $headTitle = "Главная страница";
+
     public function __invoke()
     {
-        return view('index');
+        $todo = $this->query("SELECT * FROM todo where id = :id", ['id' => 1])->firstOrFail();
+
+
+
+        return $this->view('index', compact('todo'));
     }
 
 }
