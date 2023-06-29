@@ -16,8 +16,18 @@ class RegisterController extends Controller
 
     public function store()
     {
-        $validator = new RegistrationValidator();
-        $data = $validator->validated();
-        dd($data);
+        $data = RegistrationValidator::validated();
+
+        $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
+
+        $user = $this->insert('users', $data);
+
+
+        //TODO доделать сразу авторизацию
+        if (!$user) {
+            dd('error');
+        }
+
+        redirect('/');
     }
 }

@@ -57,7 +57,22 @@ function redirect($uri): void
     exit;
 }
 
+function previousUrl(): string
+{
+    return $_SERVER['HTTP_REFERER'];
+}
+
 function method($value): string
 {
     return '<input type="hidden" name="_method" value="' . $value . '">';
+}
+
+function error($key): ?string
+{
+    return $_SESSION['_flash']['error'][$key] ?? null;
+}
+
+function old($key, $default = ''): ?string
+{
+    return $_SESSION['_flash']['old'][$key] ?? $default;
 }

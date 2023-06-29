@@ -10,7 +10,7 @@ class RegistrationValidator extends Validator
     {
         return [
             'email' => ['required','email', 'unique:users'],
-            'password' => ['string', 'min:6']
+            'password' => ['string', 'min:6', 'confirmed'],
         ];
     }
 

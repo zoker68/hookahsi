@@ -4,17 +4,21 @@ namespace Core\Validation;
 
 trait ValidationRules
 {
-    private function email($value): bool
+    private function emailValidate($value): bool
     {
+        extract($value);
+
         return filter_var($value, FILTER_VALIDATE_EMAIL);
     }
 
-    private function required($value): bool
+    private function requiredValidate($value): bool
     {
+        extract($value);
+
         return isset($value);
     }
 
-    private function unique($value): bool
+    private function uniqueValidate($value): bool
     {
         extract($value);
 
@@ -25,29 +29,38 @@ trait ValidationRules
             $filed = $key;
         }
 
-        $result = $this->query("SELECT count(id) as `count` FROM " . $table . " WHERE `" . $filed . "` = :key", ['key' => $handle])->first();
+        $result = $this->query("SELECT count(id) as `count` FROM " . $table . " WHERE `" . $filed . "` = :value", ['value' => $value])->first();
 
         return $result['count'] === 0;
 
     }
 
-    private function string($value): bool
+    private function stringValidate($value): bool
     {
+        extract($value);
+
         return is_string($value);
     }
 
-    private function min($value): bool
+    private function minValidate($value): bool
     {
         extract($value);
 
-        return strlen($handle) >= $attributes;
+        return strlen(trim($value)) >= $attributes;
     }
 
-    private function max($value): bool
+    private function maxValidate($value): bool
     {
         extract($value);
 
-        return strlen($handle) <= $attributes;
+        return strlen(trim($handle)) <= $attributes;
+    }
+
+    private function confirmedValidate($value): bool
+    {
+        extract($value);
+
+        return $_POST[$key . '_confirmation'] === $value;
     }
 
     private function defaultMessage($attr = null): array
@@ -59,6 +72,7 @@ trait ValidationRules
             'string' => 'This field must be a string value',
             'max' => 'This field can contain maximum ' . $attr . ' characters',
             'min' => 'This field can contain minimum ' . $attr . ' characters',
+            'confirmed' => 'Invalid entry in the confirmation field.'
         ];
     }
 }
