@@ -62,10 +62,7 @@ class DB
         if (!isset($to)) return null;
 
         $query = "INSERT INTO " . $table . " (" . implode(", ", $to) . ") VALUES (:" . implode(", :", $to) . ")";
-
-        $this->statement = self::$connection->prepare($query);
-
-        $this->statement->execute($data);
+        $this->query($query, $data);
 
         return $data;
     }
