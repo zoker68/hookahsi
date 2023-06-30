@@ -53,16 +53,21 @@ class DB
         return $result;
     }
 
-    public function insert($table, $data): ?array
+    public function InsertId(): int
     {
-        foreach ($data as $key => $value) {
-            $to[] = $key;
-            $values[] = $value;
-        }
-        if (!isset($to)) return null;
+        return self::$connection->lastInsertId();
+    }
+
+    public function insert($table, $data): array
+    {
+        $to = array_keys($data);
 
         $query = "INSERT INTO " . $table . " (" . implode(", ", $to) . ") VALUES (:" . implode(", :", $to) . ")";
+
         $this->query($query, $data);
+
+        $data['id'] = $this->InsertId();
+        unset($data['password']);
 
         return $data;
     }

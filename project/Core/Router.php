@@ -65,7 +65,7 @@ class Router
     {
 
         foreach (static::$routes as $route) {
-            if ($route['method'] == $method and $route['uri'] == $uri) {
+            if ($route['method'] == strtoupper($method) and $route['uri'] == $uri) {
 
                 if (!empty($route['middleware'])) {
                     foreach ($route['middleware'] as $key) {

@@ -3,6 +3,7 @@
 namespace App\Controllers\Auth;
 
 use App\Requests\Auth\RegistrationValidator;
+use Core\Authenticator;
 use Core\Controller;
 
 class RegisterController extends Controller
@@ -14,7 +15,7 @@ class RegisterController extends Controller
         return $this->view('profile/register');
     }
 
-    public function store()
+    public function store(): void
     {
         $data = RegistrationValidator::validated();
 
@@ -22,11 +23,7 @@ class RegisterController extends Controller
 
         $user = $this->insert('users', $data);
 
-
-        //TODO доделать сразу авторизацию
-        if (!$user) {
-            dd('error');
-        }
+        Authenticator::login($user);
 
         redirect('/');
     }

@@ -1,5 +1,6 @@
 <?php
 
+use Core\Authenticator;
 use Core\Router;
 
 function dd($value): void
@@ -16,11 +17,13 @@ function basePath($uri): string
     return BASE_PATH . $uri;
 }
 
-function abort($code = 404): void
+function abort($code = 404)
 {
     http_response_code($code);
 
     view('errors/' . $code, ['code' => $code]);
+
+    exit;
 }
 
 function view($template, $attributes = [], $layout = "index"): void
@@ -62,9 +65,9 @@ function previousUrl(): string
     return $_SERVER['HTTP_REFERER'];
 }
 
-function method($value): string
+function method($method): string
 {
-    return '<input type="hidden" name="_method" value="' . $value . '">';
+    return '<input type="hidden" name="_method" value="' . $method . '">';
 }
 
 function error($key): ?string
@@ -75,4 +78,14 @@ function error($key): ?string
 function old($key, $default = ''): ?string
 {
     return $_SESSION['_flash']['old'][$key] ?? $default;
+}
+
+function isGuest(): bool
+{
+    return !Authenticator::checkAuth();
+}
+
+function isLogin(): bool
+{
+    return Authenticator::checkAuth();
 }

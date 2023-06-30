@@ -2,16 +2,14 @@
 
 namespace App\Middleware;
 
+use Core\Authenticator;
+
 class Guest
 {
-
     public function handle(): void
     {
-        //TODO
-
-        if (false) {
-            redirect(route('index'));
-            exit;
+        if (Authenticator::checkAuth()) {
+            abort(403);
         }
     }
 }

@@ -20,6 +20,16 @@ trait ValidationRules
 
     private function uniqueValidate($value): bool
     {
+        return $this->checkInBase($value);
+    }
+
+    private function existValidate($value): bool
+    {
+        return !$this->checkInBase($value);
+    }
+
+    private function checkInBase($value): bool
+    {
         extract($value);
 
         if (stristr($attributes, ",")) {
@@ -69,6 +79,7 @@ trait ValidationRules
             'email' => 'Email format does not valid',
             'required' => 'Field is required',
             'unique' => 'This field must be unique',
+            'exist' => 'No value found',
             'string' => 'This field must be a string value',
             'max' => 'This field can contain maximum ' . $attr . ' characters',
             'min' => 'This field can contain minimum ' . $attr . ' characters',
