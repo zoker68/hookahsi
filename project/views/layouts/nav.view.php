@@ -12,8 +12,8 @@
                         <a href="<?= route('index'); ?>"
                            class="<?= urlIs(route('index')) ? "bg-gray-900 text-white rounded-md" : "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md"; ?> px-3 py-2 text-sm font-medium"
                            aria-current="page">Index</a>
-                        <a href="<?= route('todo'); ?>"
-                           class="<?= urlIs(route('todo')) ? "bg-gray-900 text-white rounded-md" : "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md"; ?> px-3 py-2 text-sm font-medium"
+                        <a href="<?= route('todo.index'); ?>"
+                           class="<?= urlIs(route('todo.index')) ? "bg-gray-900 text-white rounded-md" : "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md"; ?> px-3 py-2 text-sm font-medium"
                         >ToDO</a>
                         <a href="404"
                            class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">404</a>
@@ -35,10 +35,11 @@
                         >Registration</a>
                     <?php else: ?>
                         <form method="post" action="<?= route('login.delete'); ?>">
-                            <?=method("delete");?>
+                            <?= method("delete"); ?>
                             <button
                                 class="<?= urlIs(route('login.delete')) ? "bg-gray-900 text-white rounded-md" : "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md"; ?> px-3 py-2 text-sm font-medium"
-                            >LogOut</button>
+                            >LogOut
+                            </button>
                         </form>
                     <?php endif; ?>
                 </div>

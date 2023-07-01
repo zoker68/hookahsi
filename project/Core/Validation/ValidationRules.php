@@ -63,7 +63,7 @@ trait ValidationRules
     {
         extract($value);
 
-        return strlen(trim($handle)) <= $attributes;
+        return strlen(trim($value)) <= $attributes;
     }
 
     private function confirmedValidate($value): bool
@@ -82,7 +82,7 @@ trait ValidationRules
             'exist' => 'No value found',
             'string' => 'This field must be a string value',
             'max' => 'This field can contain maximum ' . $attr . ' characters',
-            'min' => 'This field can contain minimum ' . $attr . ' characters',
+            'min' => 'This field must contain minimum ' . $attr . ' characters',
             'confirmed' => 'Invalid entry in the confirmation field.'
         ];
     }

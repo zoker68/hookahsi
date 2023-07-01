@@ -4,13 +4,13 @@ namespace App\Requests\Auth;
 
 use Core\Validation\Validator;
 
-class RegistrationValidator extends Validator
+class LoginRequest extends Validator
 {
     public function rules(): array
     {
         return [
-            'email' => ['required','email', 'unique:users'],
-            'password' => ['string', 'min:6', 'confirmed'],
+            'email' => ['required', 'email', 'exist:users,email'],
+            'password' => ['string'],
         ];
     }
 
@@ -18,7 +18,7 @@ class RegistrationValidator extends Validator
     {
         return [
             'email.email' => 'Email format does not valid',
-            'email.unique' => 'This email is already in the database',
+            'email.exist' => 'No user found with this email',
         ];
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Auth;
 
-use App\Requests\Auth\RegistrationValidator;
+use App\Requests\Auth\RegistrationRequest;
 use Core\Authenticator;
 use Core\Controller;
 
@@ -17,7 +17,7 @@ class RegisterController extends Controller
 
     public function store(): void
     {
-        $data = RegistrationValidator::validated();
+        $data = RegistrationRequest::validated();
 
         $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
 

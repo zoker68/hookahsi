@@ -6,6 +6,7 @@ class Authenticator
 {
     public static function login($user): void
     {
+        unset($user['password']);
         Session::set('user', $user);
         Session::set('secret', static::getSecurityKey($user));
     }
@@ -25,6 +26,11 @@ class Authenticator
         $user = Session::get('user');
 
         return static::getSecurityKey($user);
+    }
+
+    public static function getUserData(): array
+    {
+        return Session::get('user');
     }
 
     public static function getSecurityKey($user): string

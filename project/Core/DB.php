@@ -67,7 +67,6 @@ class DB
         $this->query($query, $data);
 
         $data['id'] = $this->InsertId();
-        unset($data['password']);
 
         return $data;
     }

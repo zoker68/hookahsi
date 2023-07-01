@@ -2,6 +2,7 @@
 
 use Core\Authenticator;
 use Core\Router;
+use Core\Session;
 
 function dd($value): void
 {
@@ -88,4 +89,11 @@ function isGuest(): bool
 function isLogin(): bool
 {
     return Authenticator::checkAuth();
+}
+
+function auth(): array
+{
+    if (Authenticator::checkAuth()) {
+        return Authenticator::getUserData();
+    } else return [];
 }
