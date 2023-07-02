@@ -39,14 +39,15 @@ class DB
         return $this->statement->fetchAll();
     }
 
-    public function first()
+    public function getFirst()
     {
         return $this->statement->fetch();
     }
 
     public function firstOrFail()
     {
-        $result = $this->first();
+
+        $result = $this->getFirst();
 
         if (!$result) {
             abort(404);

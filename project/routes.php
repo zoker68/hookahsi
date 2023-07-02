@@ -11,6 +11,7 @@ $router->get("/", IndexController::class)->name('index');
 $router->get("/todo", [TodoController::class, 'index'])->name('todo.index')->middleware(['auth']);
 $router->get("/todo/create", [TodoController::class, 'create'])->name('todo.create')->middleware(['auth']);
 $router->post("/todo", [TodoController::class, 'store'])->name('todo.store')->middleware(['auth']);
+$router->get("/todo/", [TodoController::class, 'show'])->name('todo.show')->middleware(['auth']);
 
 $router->get("/register", [RegisterController::class, 'create'])->name('register')->middleware(['guest']);
 $router->post("/register", [RegisterController::class, 'store'])->name('register.store')->middleware(['guest']);

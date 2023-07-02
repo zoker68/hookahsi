@@ -2,7 +2,8 @@
     <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
         <?php foreach ($todo as $item): ?>
             <div>
-                <?= $item['id']; ?> - <?= $item['title']; ?>
+                <?= $item['id']; ?> - <a href="<?= route('todo.show', ['todo' => $item['id']]); ?>"
+                                         class="text-sky-500 hover:underline"><?= $item['title']; ?></a>
             </div>
         <? endforeach; ?>
         <div class="mt-5">

@@ -32,4 +32,9 @@ class TodoController extends Controller
         return redirect(route('todo.index'));
     }
 
+    public function show()
+    {
+       dd((new Todo())->find($_GET['todo']));
+    }
+
 }

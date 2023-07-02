@@ -5,6 +5,7 @@ namespace Core;
 abstract class Model extends DB
 {
     protected string $table;
+    protected string $primary = "id";
     private array $where = [];
     private array $select = [];
 
@@ -36,7 +37,7 @@ abstract class Model extends DB
 
     public function first(): array
     {
-        return $this->getQuery()->getAll()[0];
+        return $this->getQuery()->getFirst();
     }
 
     public function getSelect(): string
@@ -67,6 +68,11 @@ abstract class Model extends DB
         $this->select[] = $select;
 
         return $this;
+    }
+
+    public function find($primary): array
+    {
+        return $this->query("SELECT * FROM `" . $this->table . "` WHERE `" . $this->primary . "`= ?", [$primary])->firstOrFail();
     }
 
 }

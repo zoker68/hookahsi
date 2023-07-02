@@ -50,9 +50,18 @@ function urlIs($value): bool
     return $_SERVER['REQUEST_URI'] == $value;
 }
 
-function route($name): string
+function route($name, $param = []): string
 {
-    return Router::getRoute($name);
+
+    if (empty($param)) {
+        return Router::getRoute($name);
+    }
+
+    $conditions = [];
+    foreach ($param as $key => $value) {
+        $conditions[] = $key . "=" . $value;
+    }
+    return Router::getRoute($name) . "?" . implode("&", $conditions);
 }
 
 function redirect($uri): void
