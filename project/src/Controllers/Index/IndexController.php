@@ -10,8 +10,7 @@ class IndexController extends Controller
 
     public function __invoke()
     {
-        $todo = $this->query("SELECT * FROM todo where id = :id", ['id' => 1])->firstOrFail();
-
+        $todo =  1;
 
 
         return $this->view('index', compact('todo'));

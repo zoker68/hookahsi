@@ -2,7 +2,7 @@
 
 namespace Core;
 
-class Controller extends DB
+abstract class Controller
 {
     protected string $headTitle;
 

@@ -4,7 +4,7 @@ namespace Core\Validation;
 
 use Core\DB;
 
-class Validator extends DB
+class Validator
 {
     use ValidationRules;
 

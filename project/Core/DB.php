@@ -25,6 +25,7 @@ class DB
 
     public function query($query, $params = []): DB
     {
+
         $this->statement = self::$connection->prepare($query);
 
         $this->statement->execute($params);
@@ -32,8 +33,9 @@ class DB
         return $this;
     }
 
-    public function get(): array
+    public function getAll(): array
     {
+
         return $this->statement->fetchAll();
     }
 

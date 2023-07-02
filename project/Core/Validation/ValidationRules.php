@@ -2,6 +2,8 @@
 
 namespace Core\Validation;
 
+use Core\DB;
+
 trait ValidationRules
 {
     private function emailValidate($value): bool
@@ -39,7 +41,7 @@ trait ValidationRules
             $filed = $key;
         }
 
-        $result = $this->query("SELECT count(id) as `count` FROM " . $table . " WHERE `" . $filed . "` = :value", ['value' => $value])->first();
+        $result = (new DB())->query("SELECT count(id) as `count` FROM " . $table . " WHERE `" . $filed . "` = :value", ['value' => $value])->first();
 
         return $result['count'] === 0;
 

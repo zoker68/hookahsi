@@ -2,7 +2,8 @@
 
 namespace App\Controllers\Auth;
 
-use App\Requests\Auth\StoreRequest;
+use App\Models\User;
+use App\Requests\Auth\LoginRequest;
 use Core\Authenticator;
 use Core\Controller;
 use Core\Validation\ValidationException;
@@ -16,9 +17,10 @@ class AuthenticatedSessionController extends Controller
 
     public function store()
     {
-        $data = StoreRequest::validated();
+        $data = LoginRequest::validated();
 
-        $user = $this->query("SELECT * FROM `users` WHERE email = :email", ['email' => $data['email']])->first();
+        $user = (new User)->where('email', $data['email'])->first();
+
         if (!password_verify($data['password'], $user['password'])) {
             unset($data['password']);
             $error['password'] = "Incorrect password";
