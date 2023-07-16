@@ -12,7 +12,7 @@ class TodoController extends Controller
 
     public function index(): null
     {
-        $todo = (new Todo)->all();
+        $todo = Todo::all();
 
         return $this->view('todo/index', compact('todo'));
     }
@@ -27,14 +27,16 @@ class TodoController extends Controller
         $data = StoreRequest::validated();
         $data['user_id'] = auth()['id'];
 
-        (new Todo)->create($data);
+        Todo::create($data);
 
         return redirect(route('todo.index'));
     }
 
-    public function show()
+    public function show(): null
     {
-       dd((new Todo())->find($_GET['todo']));
+        $todo = Todo::find($_GET['todo']);
+
+        return $this->view('todo/show', compact('todo'));
     }
 
 }

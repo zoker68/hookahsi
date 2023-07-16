@@ -41,7 +41,7 @@ trait ValidationRules
             $filed = $key;
         }
 
-        $result = (new DB())->query("SELECT count(id) as `count` FROM " . $table . " WHERE `" . $filed . "` = :value", ['value' => $value])->first();
+        $result = (new DB())->query("SELECT count(id) as `count` FROM " . $table . " WHERE `" . $filed . "` = :value", ['value' => $value])->getFirst();
 
         return $result['count'] === 0;
 

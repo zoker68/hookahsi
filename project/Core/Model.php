@@ -9,22 +9,28 @@ abstract class Model extends DB
     private array $where = [];
     private array $select = [];
 
-
-    public function all(): array
+    public static function all(): array
     {
         $instance = new static();
 
         return $instance->query("SELECT * FROM `" . $instance->table . "`")->get();
     }
 
-    public function create($data)
+    public static function find($primary): array
+    {
+        $instance = new static();
+
+        return $instance->query("SELECT * FROM `" . $instance->table . "` WHERE `" . $instance->primary . "`= ?", [$primary])->firstOrFail();
+    }
+
+    public static function create($data): array
     {
         $instance = new static();
 
         return $instance->insert($instance->table, $data);
     }
 
-    public function getQuery(): DB
+    public function getQuery(): self
     {
         $query = "SELECT " . $this->getSelect() . " FROM " . $this->table . " " . $this->getWhere();
         return $this->query($query, $this->where);
@@ -49,6 +55,8 @@ abstract class Model extends DB
     {
         if (empty($this->where)) return null;
 
+        $whereParam = [];
+
         foreach ($this->where as $key => $value) {
             $whereParam[] = "`" . $key . "`" . "= :" . $key;
         }
@@ -70,9 +78,5 @@ abstract class Model extends DB
         return $this;
     }
 
-    public function find($primary): array
-    {
-        return $this->query("SELECT * FROM `" . $this->table . "` WHERE `" . $this->primary . "`= ?", [$primary])->firstOrFail();
-    }
 
 }

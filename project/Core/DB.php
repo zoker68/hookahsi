@@ -12,15 +12,13 @@ class DB
 
     public function __construct()
     {
+        if (self::$connection != null) return;
+
         $config = require(BASE_PATH . "config.php");
 
         $dsn = "mysql:" . http_build_query($config['db']['dsn'], "", ";");
 
-        if (self::$connection == null) {
-            self::$connection = new PDO($dsn, $config['db']['auth']['username'], $config['db']['auth']['password'], [PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC]);
-        } else {
-            return self::$connection;
-        }
+        self::$connection = new PDO($dsn, $config['db']['auth']['username'], $config['db']['auth']['password'], [PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC]);
     }
 
     public function query($query, $params = []): DB
@@ -50,7 +48,7 @@ class DB
         $result = $this->getFirst();
 
         if (!$result) {
-            abort(404);
+            abort();
         }
 
         return $result;
